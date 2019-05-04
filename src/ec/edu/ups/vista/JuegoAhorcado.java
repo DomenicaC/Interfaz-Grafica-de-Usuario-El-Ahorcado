@@ -5,17 +5,191 @@
  */
 package ec.edu.ups.vista;
 
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Domenica Cañizares
  */
 public class JuegoAhorcado extends javax.swing.JFrame {
 
+    private ImageIcon imagen[];
+    private JButton boton[];
+    private String palabra[];
+    private int random;
+    private int error;
+    private int error2;
+    private String resp[];
+    private int cont = 0;
+
     /**
      * Creates new form JuegoAhorcado
      */
     public JuegoAhorcado() {
         initComponents();
+        
+
+        imagen = new ImageIcon[7];
+        boton = new JButton[27];
+        palabra = new String[10];
+
+        //cargar imagenes
+        imagen[0] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/0.png/"));
+        imagen[1] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/cara.png/"));
+        imagen[2] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/cuerpo.png/"));
+        imagen[3] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/bra1.png/"));
+        imagen[4] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/bra2.png/"));
+        imagen[5] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/pierna.png/"));
+        imagen[6] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/muerto.png/"));
+
+        //botones de las letras
+        boton[1] = btnA;
+        boton[2] = btnB;
+        boton[3] = btnC;
+        boton[4] = btnD;
+        boton[5] = btnE;
+        boton[6] = btnF;
+        boton[7] = btnG;
+        boton[8] = btnH;
+        boton[9] = btnI;
+        boton[10] = btnJ;
+        boton[11] = btnK;
+        boton[12] = btnL;
+        boton[13] = btnM;
+        boton[14] = btnN;
+        boton[15] = btnÑ;
+        boton[16] = btnO;
+        boton[17] = btnP;
+        boton[18] = btnQ;
+        boton[19] = btnR;
+        boton[20] = btnS;
+        boton[21] = btnT;
+        boton[22] = btnU;
+        boton[23] = btnV;
+        boton[24] = btnW;
+        boton[25] = btnX;
+        boton[26] = btnY;
+        boton[27] = btnZ;
+
+        //lista de palabras
+        palabra[0] = "Mariposa";
+        palabra[1] = "Zapato";
+        palabra[2] = "Herradura";
+        palabra[3] = "Amazonas";
+        palabra[4] = "Instagram";
+        palabra[5] = "Canibal";
+        palabra[6] = "Bandera";
+        palabra[7] = "Diabetes";
+        palabra[8] = "Purpura";
+        palabra[9] = "Programacion";
+
+        //evento
+        for (int i = 1; i < 27; i++) {
+            boton[i].addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    verificarLetra(e);
+                }
+            });
+        }
+        iniciar();
+    }
+
+    public void iniciar() {
+        //errores en 0
+        error = 0;
+        error = 6;
+        Dibujo.setIcon(imagen[0]);
+        txtPalabra.setText("");
+
+        //letras abecedario
+        for (int i = 0; i < 27; i++) {
+            boton[i].setEnabled(true);
+        }
+
+        //palabra aleatorea
+        random = (int) 0 + (int) (Math.random() * (palabra.length - 1) + 1);
+
+        //separar palabras
+        String pal[] = palabra[random].split(" ");
+        resp = new String[palabra[random].length() + 1];
+        int j = 0;
+
+        //numero de letras en guiones
+        for (String pal1 : pal) {
+            for (int i = 0; i < pal1.length(); i++) {
+                txtPalabra.setText(txtPalabra.getText() + "_ ");
+                resp[j++] = "_ ";
+            }
+        }
+    }
+
+    public void verificarLetra(ActionEvent e) {
+        JButton bt = (JButton) e.getSource();
+        char c[];
+
+        //busqueda de la letra
+        for (int i = 0; i < 27; i++) {
+            if (bt == boton[i]) {
+                c = Character.toChars(64 + i);
+                boolean encontrada = false;
+                for (int j = 0; j < palabra[random].length(); j++) {
+                    if (c[0] == palabra[random].charAt(j)) {
+                        resp[j] = c[0] + "";
+                        encontrada = true;
+                    }
+                }
+                //si la letra esta nen la palabra
+                if (encontrada) {
+                    txtPalabra.setText("");
+                    for (String res : resp) {
+                        if (" ".equals(res)) {
+                            txtPalabra.setText(txtPalabra.getText() + "\n");
+                        } else {
+                            txtPalabra.setText(txtPalabra.getText() + res + " ");
+                        }
+                    }
+                    //letras faltantes de la palabra
+                    boolean ganar = false;
+                    for (String res : resp) {
+                        if (res.equals("_")) {
+                            ganar = true;
+                            break;
+                        }
+                    }
+
+                    //mensaje de si gano
+                    if (ganar) {
+                        JOptionPane.showMessageDialog(this, "Has Ganado");
+                        return;
+                    }
+
+                } else {
+                    int r = cont++;
+                    if (r == 1) {
+                        JOptionPane.showMessageDialog(this, "Has cometido " + r + " error");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Has cometido " + r + " errores");
+                    }
+                    
+                    if(r==6){
+                        JOptionPane.showMessageDialog(this, "Has Perdido \n La respuesta era: " +palabra[random]);
+                        return;
+                    }
+                }
+                //boton desactivado
+                bt.setEnabled(false);
+                break;
+            }
+        }
     }
 
     /**
@@ -42,29 +216,29 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         btnJ = new javax.swing.JButton();
         btnK = new javax.swing.JButton();
         btnL = new javax.swing.JButton();
-        bttnM = new javax.swing.JButton();
+        btnM = new javax.swing.JButton();
         btnN = new javax.swing.JButton();
         btnO = new javax.swing.JButton();
         btnP = new javax.swing.JButton();
         btnQ = new javax.swing.JButton();
         btnR = new javax.swing.JButton();
         btnS = new javax.swing.JButton();
-        jButton20 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
-        jButton22 = new javax.swing.JButton();
-        jButton23 = new javax.swing.JButton();
-        jButton24 = new javax.swing.JButton();
-        jButton25 = new javax.swing.JButton();
-        jButton26 = new javax.swing.JButton();
+        btnT = new javax.swing.JButton();
+        btnU = new javax.swing.JButton();
+        btnV = new javax.swing.JButton();
+        btnW = new javax.swing.JButton();
+        btnX = new javax.swing.JButton();
+        btnY = new javax.swing.JButton();
+        btnZ = new javax.swing.JButton();
+        btnÑ = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton27 = new javax.swing.JButton();
-        jlbMuerto = new javax.swing.JLabel();
-        jlbPiera = new javax.swing.JLabel();
-        jlbBra2 = new javax.swing.JLabel();
-        jlbBra1 = new javax.swing.JLabel();
-        jlbCuerpo = new javax.swing.JLabel();
-        jlbCara = new javax.swing.JLabel();
-        jlb0 = new javax.swing.JLabel();
+        txtPalabra = new javax.swing.JTextField();
+        btnPista = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        Dibujo = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtPista = new javax.swing.JTextField();
 
         jLabel1.setText("jLabel1");
 
@@ -76,6 +250,7 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         getContentPane().add(jlbTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(318, 11, -1, 66));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Letras"));
 
         btnA.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnA.setText("A");
@@ -173,11 +348,11 @@ public class JuegoAhorcado extends javax.swing.JFrame {
             }
         });
 
-        bttnM.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        bttnM.setText("M");
-        bttnM.addActionListener(new java.awt.event.ActionListener() {
+        btnM.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnM.setText("M");
+        btnM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bttnMActionPerformed(evt);
+                btnMActionPerformed(evt);
             }
         });
 
@@ -229,59 +404,67 @@ public class JuegoAhorcado extends javax.swing.JFrame {
             }
         });
 
-        jButton20.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton20.setText("T");
-        jButton20.addActionListener(new java.awt.event.ActionListener() {
+        btnT.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnT.setText("T");
+        btnT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton20ActionPerformed(evt);
+                btnTActionPerformed(evt);
             }
         });
 
-        jButton21.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton21.setText("U");
-        jButton21.addActionListener(new java.awt.event.ActionListener() {
+        btnU.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnU.setText("U");
+        btnU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton21ActionPerformed(evt);
+                btnUActionPerformed(evt);
             }
         });
 
-        jButton22.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton22.setText("V");
-        jButton22.addActionListener(new java.awt.event.ActionListener() {
+        btnV.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnV.setText("V");
+        btnV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton22ActionPerformed(evt);
+                btnVActionPerformed(evt);
             }
         });
 
-        jButton23.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton23.setText("W");
-        jButton23.addActionListener(new java.awt.event.ActionListener() {
+        btnW.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnW.setText("W");
+        btnW.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton23ActionPerformed(evt);
+                btnWActionPerformed(evt);
             }
         });
 
-        jButton24.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton24.setText("X");
-        jButton24.addActionListener(new java.awt.event.ActionListener() {
+        btnX.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnX.setText("X");
+        btnX.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton24ActionPerformed(evt);
+                btnXActionPerformed(evt);
             }
         });
 
-        jButton25.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton25.setText("Y");
-        jButton25.addActionListener(new java.awt.event.ActionListener() {
+        btnY.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnY.setText("Y");
+        btnY.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton25ActionPerformed(evt);
+                btnYActionPerformed(evt);
             }
         });
 
-        jButton26.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton26.setText("Z");
-        jButton26.addActionListener(new java.awt.event.ActionListener() {
+        btnZ.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnZ.setText("Z");
+        btnZ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton26ActionPerformed(evt);
+                btnZActionPerformed(evt);
+            }
+        });
+
+        btnÑ.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnÑ.setText("Ñ");
+        btnÑ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnÑActionPerformed(evt);
             }
         });
 
@@ -292,20 +475,6 @@ public class JuegoAhorcado extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnH)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnI)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnJ)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnK)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnL)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bttnM)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnN))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -321,32 +490,48 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnG))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton22)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnO)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnP)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnH)
+                            .addComponent(btnÑ))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnO)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnP)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnQ)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnR)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnS)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton20)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton21))
+                                .addComponent(btnT))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton23)
+                                .addComponent(btnI)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton24)
+                                .addComponent(btnJ)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton25)
+                                .addComponent(btnK)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton26)))))
+                                .addComponent(btnL)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnM)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnN))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btnU)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnV)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnW)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnX)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnY)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnZ)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -368,7 +553,7 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                     .addComponent(btnJ)
                     .addComponent(btnK)
                     .addComponent(btnL)
-                    .addComponent(bttnM)
+                    .addComponent(btnM)
                     .addComponent(btnN))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -377,180 +562,246 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                     .addComponent(btnQ)
                     .addComponent(btnR)
                     .addComponent(btnS)
-                    .addComponent(jButton20)
-                    .addComponent(jButton21))
+                    .addComponent(btnT)
+                    .addComponent(btnÑ))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton22)
-                    .addComponent(jButton23)
-                    .addComponent(jButton24)
-                    .addComponent(jButton25)
-                    .addComponent(jButton26))
+                    .addComponent(btnV)
+                    .addComponent(btnW)
+                    .addComponent(btnX)
+                    .addComponent(btnY)
+                    .addComponent(btnZ)
+                    .addComponent(btnU))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 206, -1, -1));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Palabra", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 18))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(txtPalabra, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 48, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(txtPalabra, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 140, -1, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
 
-        jButton27.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jButton27.setText("Nuevo Juego");
-        jButton27.addActionListener(new java.awt.event.ActionListener() {
+        btnPista.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnPista.setText("Pista");
+        btnPista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton27ActionPerformed(evt);
+                btnPistaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(107, 400, 197, 52));
+        getContentPane().add(btnPista, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 510, 197, 52));
 
-        jlbMuerto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ec/edu/ups/imagenes/muerto.png"))); // NOI18N
-        jlbMuerto.setText("jLabel2");
-        getContentPane().add(jlbMuerto, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 100, 490, 440));
+        jPanel3.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Imagen"));
 
-        jlbPiera.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ec/edu/ups/imagenes/pierna.png"))); // NOI18N
-        jlbPiera.setText("jLabel2");
-        getContentPane().add(jlbPiera, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 100, 490, 420));
+        Dibujo.setText("0");
 
-        jlbBra2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ec/edu/ups/imagenes/bra2.png"))); // NOI18N
-        jlbBra2.setText("jLabel2");
-        getContentPane().add(jlbBra2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 100, 490, 430));
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Dibujo, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Dibujo, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
-        jlbBra1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ec/edu/ups/imagenes/bra1.png"))); // NOI18N
-        jlbBra1.setText("jLabel2");
-        getContentPane().add(jlbBra1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 100, 490, 440));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, 320, 440));
 
-        jlbCuerpo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ec/edu/ups/imagenes/cuerpo.png"))); // NOI18N
-        jlbCuerpo.setText("jLabel1");
-        getContentPane().add(jlbCuerpo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 460, 540));
+        btnNuevo.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnNuevo.setText("Nuevo Juego");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, 197, 52));
 
-        jlbCara.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ec/edu/ups/imagenes/cara.png"))); // NOI18N
-        getContentPane().add(jlbCara, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, 450, 460));
-
-        jlb0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ec/edu/ups/imagenes/0.png"))); // NOI18N
-        getContentPane().add(jlb0, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 95, -1, -1));
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel2.setText("Pista");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, -1, -1));
+        getContentPane().add(txtPista, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 100, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAActionPerformed
+    private void btnPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPistaActionPerformed
+       if(palabra[random]==palabra[0]){
+           txtPista.setText("Animal que vuela");
+       }
+       
+       if(palabra[random]==palabra[1]){
+           txtPista.setText("Prenda de ropa");
+       }
+       
+       if(palabra[random]==palabra[2]){
+           txtPista.setText("Animal que vuela");
+       }
+       
+       if(palabra[random]==palabra[3]){
+           txtPista.setText("Se usa en los caballos");
+       }
+       
+       if(palabra[random]==palabra[4]){
+           txtPista.setText("Red social");
+       }
+       
+       if(palabra[random]==palabra[5]){
+           txtPista.setText("Come carne");
+       }
+       
+       if(palabra[random]==palabra[6]){
+           txtPista.setText("Representa a un pais");
+       }
+       
+       if(palabra[random]==palabra[7]){
+           txtPista.setText("Enfermedad");
+       }
+       
+       if(palabra[random]==palabra[8]){
+           txtPista.setText("Color");
+       }
+       
+       if(palabra[random]==palabra[9]){
+           txtPista.setText("Materia de Computacion");
+       }
+           
+    }//GEN-LAST:event_btnPistaActionPerformed
 
-    private void btnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBActionPerformed
+    private void btnÑActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÑActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnBActionPerformed
+    }//GEN-LAST:event_btnÑActionPerformed
 
-    private void btnCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCActionPerformed
+    private void btnZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnCActionPerformed
+    }//GEN-LAST:event_btnZActionPerformed
 
-    private void btnDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDActionPerformed
+    private void btnYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnDActionPerformed
+    }//GEN-LAST:event_btnYActionPerformed
 
-    private void btnEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEActionPerformed
+    private void btnXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnEActionPerformed
+    }//GEN-LAST:event_btnXActionPerformed
 
-    private void btnFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFActionPerformed
+    private void btnWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnFActionPerformed
+    }//GEN-LAST:event_btnWActionPerformed
 
-    private void btnGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGActionPerformed
+    private void btnVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnGActionPerformed
+    }//GEN-LAST:event_btnVActionPerformed
 
-    private void btnHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHActionPerformed
+    private void btnUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnHActionPerformed
+    }//GEN-LAST:event_btnUActionPerformed
 
-    private void btnIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIActionPerformed
+    private void btnTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnIActionPerformed
-
-    private void btnJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnJActionPerformed
-
-    private void btnKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnKActionPerformed
-
-    private void btnLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLActionPerformed
-
-    private void bttnMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnMActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bttnMActionPerformed
-
-    private void btnNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnNActionPerformed
-
-    private void btnOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnOActionPerformed
-
-    private void btnPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPActionPerformed
-
-    private void btnQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnQActionPerformed
-
-    private void btnRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRActionPerformed
+    }//GEN-LAST:event_btnTActionPerformed
 
     private void btnSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSActionPerformed
 
-    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+    private void btnRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton20ActionPerformed
+    }//GEN-LAST:event_btnRActionPerformed
 
-    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+    private void btnQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton21ActionPerformed
+    }//GEN-LAST:event_btnQActionPerformed
 
-    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+    private void btnPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton22ActionPerformed
+    }//GEN-LAST:event_btnPActionPerformed
 
-    private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
+    private void btnOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton23ActionPerformed
+    }//GEN-LAST:event_btnOActionPerformed
 
-    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
+    private void btnNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton24ActionPerformed
+    }//GEN-LAST:event_btnNActionPerformed
 
-    private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
+    private void btnMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton25ActionPerformed
+    }//GEN-LAST:event_btnMActionPerformed
 
-    private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
+    private void btnLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton26ActionPerformed
+    }//GEN-LAST:event_btnLActionPerformed
 
-    private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
+    private void btnKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton27ActionPerformed
+    }//GEN-LAST:event_btnKActionPerformed
+
+    private void btnJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnJActionPerformed
+
+    private void btnIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIActionPerformed
+
+    private void btnHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHActionPerformed
+
+    private void btnGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGActionPerformed
+
+    private void btnFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFActionPerformed
+
+    private void btnEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEActionPerformed
+
+    private void btnDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDActionPerformed
+
+    private void btnCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCActionPerformed
+
+    private void btnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBActionPerformed
+
+    private void btnAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        iniciar();
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -566,16 +817,21 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JuegoAhorcado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JuegoAhorcado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JuegoAhorcado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JuegoAhorcado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JuegoAhorcado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JuegoAhorcado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JuegoAhorcado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JuegoAhorcado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -588,6 +844,7 @@ public class JuegoAhorcado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Dibujo;
     private javax.swing.JButton btnA;
     private javax.swing.JButton btnB;
     private javax.swing.JButton btnC;
@@ -600,31 +857,30 @@ public class JuegoAhorcado extends javax.swing.JFrame {
     private javax.swing.JButton btnJ;
     private javax.swing.JButton btnK;
     private javax.swing.JButton btnL;
+    private javax.swing.JButton btnM;
     private javax.swing.JButton btnN;
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnO;
     private javax.swing.JButton btnP;
+    private javax.swing.JButton btnPista;
     private javax.swing.JButton btnQ;
     private javax.swing.JButton btnR;
     private javax.swing.JButton btnS;
-    private javax.swing.JButton bttnM;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
-    private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton25;
-    private javax.swing.JButton jButton26;
-    private javax.swing.JButton jButton27;
+    private javax.swing.JButton btnT;
+    private javax.swing.JButton btnU;
+    private javax.swing.JButton btnV;
+    private javax.swing.JButton btnW;
+    private javax.swing.JButton btnX;
+    private javax.swing.JButton btnY;
+    private javax.swing.JButton btnZ;
+    private javax.swing.JButton btnÑ;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel jlb0;
-    private javax.swing.JLabel jlbBra1;
-    private javax.swing.JLabel jlbBra2;
-    private javax.swing.JLabel jlbCara;
-    private javax.swing.JLabel jlbCuerpo;
-    private javax.swing.JLabel jlbMuerto;
-    private javax.swing.JLabel jlbPiera;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel jlbTitulo;
+    private javax.swing.JTextField txtPalabra;
+    private javax.swing.JTextField txtPista;
     // End of variables declaration//GEN-END:variables
 }
