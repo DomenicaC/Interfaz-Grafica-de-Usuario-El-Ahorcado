@@ -5,11 +5,8 @@
  */
 package ec.edu.ups.vista;
 
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -17,6 +14,8 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Domenica Cañizares
+ * @since 03-Mayo-2019
+ * @version IDE 8.0.2 
  */
 public class JuegoAhorcado extends javax.swing.JFrame {
 
@@ -41,13 +40,13 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         palabra = new String[10];
 
         //cargar imagenes
-        imagen[0] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/0.png/"));
-        imagen[1] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/cara.png/"));
-        imagen[2] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/cuerpo.png/"));
-        imagen[3] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/bra1.png/"));
-        imagen[4] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/bra2.png/"));
-        imagen[5] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/pierna.png/"));
-        imagen[6] = new ImageIcon(getClass().getResource("/ec.edu.ups.imagenes/muerto.png/"));
+        imagen[0] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/0.png/"));
+        imagen[1] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/cara.png/"));
+        imagen[2] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/cuerpo.png/"));
+        imagen[3] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/bra1.png/"));
+        imagen[4] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/bra2.png/"));
+        imagen[5] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/pierna.png/"));
+        imagen[6] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/muerto.png/"));
 
         //botones de las letras
         boton[1] = btnA;
