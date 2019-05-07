@@ -7,6 +7,7 @@ package ec.edu.ups.vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -15,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author Domenica Cañizares
  * @since 03-Mayo-2019
- * @version IDE 8.0.2 
+ * @version IDE 8.0.2
  */
 public class JuegoAhorcado extends javax.swing.JFrame {
 
@@ -26,27 +27,26 @@ public class JuegoAhorcado extends javax.swing.JFrame {
     private int error;
     private int error2;
     private String resp[];
-    private int cont = 0;
+    private int cont = 1;
 
     /**
      * Creates new form JuegoAhorcado
      */
     public JuegoAhorcado() {
         initComponents();
-        
 
         imagen = new ImageIcon[7];
         boton = new JButton[27];
         palabra = new String[10];
 
         //cargar imagenes
-        imagen[0] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/0.png/"));
-        imagen[1] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/cara.png/"));
-        imagen[2] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/cuerpo.png/"));
-        imagen[3] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/bra1.png/"));
-        imagen[4] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/bra2.png/"));
-        imagen[5] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/pierna.png/"));
-        imagen[6] = new ImageIcon(getClass().getResource("/src/ec.edu.ups.imagenes/muerto.png/"));
+        imagen[0] = new ImageIcon("src/ec/edu/ups/imagenes/0.png");
+        imagen[1] = new ImageIcon("src/ec/edu/ups/imagenes/cara.png");
+        imagen[2] = new ImageIcon("src/ec/edu/ups/imagenes/cuerpo.png");
+        imagen[3] = new ImageIcon("src/ec/edu/ups/imagenes/bra1.png");
+        imagen[4] = new ImageIcon("src/ec/edu/ups/imagenes/bra2.png");
+        imagen[5] = new ImageIcon("src/ec/edu/ups/imagenes/pierna.png");
+        imagen[6] = new ImageIcon("src/ec/edu/ups/imagenes/muerto.png");
 
         //botones de las letras
         boton[1] = btnA;
@@ -63,37 +63,35 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         boton[12] = btnL;
         boton[13] = btnM;
         boton[14] = btnN;
-        boton[15] = btnÑ;
-        boton[16] = btnO;
-        boton[17] = btnP;
-        boton[18] = btnQ;
-        boton[19] = btnR;
-        boton[20] = btnS;
-        boton[21] = btnT;
-        boton[22] = btnU;
-        boton[23] = btnV;
-        boton[24] = btnW;
-        boton[25] = btnX;
-        boton[26] = btnY;
-        boton[27] = btnZ;
+        boton[15] = btnO;
+        boton[16] = btnP;
+        boton[17] = btnQ;
+        boton[18] = btnR;
+        boton[19] = btnS;
+        boton[20] = btnT;
+        boton[21] = btnU;
+        boton[22] = btnV;
+        boton[23] = btnW;
+        boton[24] = btnX;
+        boton[25] = btnY;
+        boton[26] = btnZ;
 
         //lista de palabras
-        palabra[0] = "Mariposa";
-        palabra[1] = "Zapato";
-        palabra[2] = "Herradura";
-        palabra[3] = "Amazonas";
-        palabra[4] = "Instagram";
-        palabra[5] = "Canibal";
-        palabra[6] = "Bandera";
-        palabra[7] = "Diabetes";
-        palabra[8] = "Purpura";
-        palabra[9] = "Programacion";
+        palabra[0] = "Mariposa".toUpperCase();
+        palabra[1] = "Zapato".toUpperCase();
+        palabra[2] = "Herradura".toUpperCase();
+        palabra[3] = "Amazonas".toUpperCase();
+        palabra[4] = "Instagram".toUpperCase();
+        palabra[5] = "Canibal".toUpperCase();
+        palabra[6] = "Bandera".toUpperCase();
+        palabra[7] = "Diabetes".toUpperCase();
+        palabra[8] = "Purpura".toUpperCase();
+        palabra[9] = "Programacion".toUpperCase();
 
         //evento
         for (int i = 1; i < 27; i++) {
             boton[i].addActionListener(new ActionListener() {
 
-                @Override
                 public void actionPerformed(ActionEvent e) {
                     verificarLetra(e);
                 }
@@ -105,12 +103,13 @@ public class JuegoAhorcado extends javax.swing.JFrame {
     public void iniciar() {
         //errores en 0
         error = 0;
-        error = 6;
+        //error = 6;
         Dibujo.setIcon(imagen[0]);
-        txtPalabra.setText("");
+        pnllPalabra.setText("");
+        txtPista.setText("");
 
         //letras abecedario
-        for (int i = 0; i < 27; i++) {
+        for (int i = 1; i < 27; i++) {
             boton[i].setEnabled(true);
         }
 
@@ -125,9 +124,11 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         //numero de letras en guiones
         for (String pal1 : pal) {
             for (int i = 0; i < pal1.length(); i++) {
-                txtPalabra.setText(txtPalabra.getText() + "_ ");
-                resp[j++] = "_ ";
+                pnllPalabra.setText(pnllPalabra.getText() + "_ ");
+                resp[j++] = "_";
             }
+            pnllPalabra.setText(pnllPalabra.getText() + "\n");
+            resp[j++] = " ";
         }
     }
 
@@ -136,7 +137,7 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         char c[];
 
         //busqueda de la letra
-        for (int i = 0; i < 27; i++) {
+        for (int i = 1; i < 27; i++) {
             if (bt == boton[i]) {
                 c = Character.toChars(64 + i);
                 boolean encontrada = false;
@@ -148,39 +149,41 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                 }
                 //si la letra esta nen la palabra
                 if (encontrada) {
-                    txtPalabra.setText("");
+                    pnllPalabra.setText("");
                     for (String res : resp) {
                         if (" ".equals(res)) {
-                            txtPalabra.setText(txtPalabra.getText() + "\n");
+                            pnllPalabra.setText(pnllPalabra.getText() + "\n");
                         } else {
-                            txtPalabra.setText(txtPalabra.getText() + res + " ");
+                            pnllPalabra.setText(pnllPalabra.getText() + res + " ");
                         }
                     }
                     //letras faltantes de la palabra
-                    boolean ganar = false;
+                    boolean ganar = true;
                     for (String res : resp) {
                         if (res.equals("_")) {
-                            ganar = true;
+                            ganar = false;
                             break;
                         }
                     }
 
                     //mensaje de si gano
                     if (ganar) {
+                        //bt.setEnabled(false);
                         JOptionPane.showMessageDialog(this, "Has Ganado");
                         return;
                     }
 
                 } else {
+                    Dibujo.setIcon(imagen[++error]);
                     int r = cont++;
                     if (r == 1) {
                         JOptionPane.showMessageDialog(this, "Has cometido " + r + " error");
                     } else {
                         JOptionPane.showMessageDialog(this, "Has cometido " + r + " errores");
                     }
-                    
-                    if(r==6){
-                        JOptionPane.showMessageDialog(this, "Has Perdido \n La respuesta era: " +palabra[random]);
+
+                    if (r == 6) {
+                        JOptionPane.showMessageDialog(this, "Has Perdido \n La respuesta era: " + palabra[random]);
                         return;
                     }
                 }
@@ -229,9 +232,9 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         btnX = new javax.swing.JButton();
         btnY = new javax.swing.JButton();
         btnZ = new javax.swing.JButton();
-        btnÑ = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        txtPalabra = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        pnllPalabra = new javax.swing.JTextPane();
         btnPista = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         Dibujo = new javax.swing.JLabel();
@@ -459,14 +462,6 @@ public class JuegoAhorcado extends javax.swing.JFrame {
             }
         });
 
-        btnÑ.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        btnÑ.setText("Ñ");
-        btnÑ.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnÑActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -491,12 +486,10 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnH)
-                            .addComponent(btnÑ))
+                            .addComponent(btnO))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnO)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnP)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnQ)
@@ -505,7 +498,9 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnS)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnT))
+                                .addComponent(btnT)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnU))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnI)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -518,10 +513,7 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                                 .addComponent(btnM)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnN))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(btnU)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnV)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnW)
@@ -530,7 +522,8 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnY)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnZ)))
+                        .addComponent(btnZ)
+                        .addGap(49, 49, 49)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -562,16 +555,15 @@ public class JuegoAhorcado extends javax.swing.JFrame {
                     .addComponent(btnR)
                     .addComponent(btnS)
                     .addComponent(btnT)
-                    .addComponent(btnÑ))
-                .addGap(18, 18, 18)
+                    .addComponent(btnU))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnV)
                     .addComponent(btnW)
                     .addComponent(btnX)
                     .addComponent(btnY)
-                    .addComponent(btnZ)
-                    .addComponent(btnU))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnZ))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, -1, -1));
@@ -579,23 +571,31 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Palabra", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 18))); // NOI18N
 
+        pnllPalabra.setEditable(false);
+        pnllPalabra.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        jScrollPane1.setViewportView(pnllPalabra);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(txtPalabra, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+            .addGap(0, 428, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(txtPalabra, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 59, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 10, Short.MAX_VALUE)))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 440, 90));
 
         btnPista.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btnPista.setText("Pista");
@@ -617,18 +617,18 @@ public class JuegoAhorcado extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Dibujo, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addComponent(Dibujo, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Dibujo, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addComponent(Dibujo, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, 320, 440));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, 480, 510));
 
         btnNuevo.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btnNuevo.setText("Nuevo Juego");
@@ -642,57 +642,55 @@ public class JuegoAhorcado extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel2.setText("Pista");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, -1, -1));
-        getContentPane().add(txtPista, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 100, 30));
+
+        txtPista.setEditable(false);
+        getContentPane().add(txtPista, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 210, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPistaActionPerformed
-       if(palabra[random]==palabra[0]){
-           txtPista.setText("Animal que vuela");
-       }
-       
-       if(palabra[random]==palabra[1]){
-           txtPista.setText("Prenda de ropa");
-       }
-       
-       if(palabra[random]==palabra[2]){
-           txtPista.setText("Animal que vuela");
-       }
-       
-       if(palabra[random]==palabra[3]){
-           txtPista.setText("Se usa en los caballos");
-       }
-       
-       if(palabra[random]==palabra[4]){
-           txtPista.setText("Red social");
-       }
-       
-       if(palabra[random]==palabra[5]){
-           txtPista.setText("Come carne");
-       }
-       
-       if(palabra[random]==palabra[6]){
-           txtPista.setText("Representa a un pais");
-       }
-       
-       if(palabra[random]==palabra[7]){
-           txtPista.setText("Enfermedad");
-       }
-       
-       if(palabra[random]==palabra[8]){
-           txtPista.setText("Color");
-       }
-       
-       if(palabra[random]==palabra[9]){
-           txtPista.setText("Materia de Computacion");
-       }
-           
-    }//GEN-LAST:event_btnPistaActionPerformed
+        if (palabra[random] == palabra[0]) {
+            txtPista.setText("Animal que vuela");
+        }
 
-    private void btnÑActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnÑActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnÑActionPerformed
+        if (palabra[random] == palabra[1]) {
+            txtPista.setText("Prenda de ropa");
+        }
+
+        if (palabra[random] == palabra[2]) {
+            txtPista.setText("Se usa en los caballos");
+        }
+
+        if (palabra[random] == palabra[3]) {
+            txtPista.setText("Selva");
+        }
+
+        if (palabra[random] == palabra[4]) {
+            txtPista.setText("Red social");
+        }
+
+        if (palabra[random] == palabra[5]) {
+            txtPista.setText("Come carne");
+        }
+
+        if (palabra[random] == palabra[6]) {
+            txtPista.setText("Representa a un pais");
+        }
+
+        if (palabra[random] == palabra[7]) {
+            txtPista.setText("Enfermedad");
+        }
+
+        if (palabra[random] == palabra[8]) {
+            txtPista.setText("Color");
+        }
+
+        if (palabra[random] == palabra[9]) {
+            txtPista.setText("Materia de Computacion");
+        }
+
+    }//GEN-LAST:event_btnPistaActionPerformed
 
     private void btnZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZActionPerformed
         // TODO add your handling code here:
@@ -872,14 +870,14 @@ public class JuegoAhorcado extends javax.swing.JFrame {
     private javax.swing.JButton btnX;
     private javax.swing.JButton btnY;
     private javax.swing.JButton btnZ;
-    private javax.swing.JButton btnÑ;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jlbTitulo;
-    private javax.swing.JTextField txtPalabra;
+    private javax.swing.JTextPane pnllPalabra;
     private javax.swing.JTextField txtPista;
     // End of variables declaration//GEN-END:variables
 }
