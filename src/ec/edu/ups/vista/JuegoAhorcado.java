@@ -7,7 +7,6 @@ package ec.edu.ups.vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -25,7 +24,6 @@ public class JuegoAhorcado extends javax.swing.JFrame {
     private String palabra[];
     private int random;
     private int error;
-    private int error2;
     private String resp[];
     private int cont = 1;
 
@@ -693,107 +691,107 @@ public class JuegoAhorcado extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPistaActionPerformed
 
     private void btnZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnZActionPerformed
 
     private void btnYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnYActionPerformed
 
     private void btnXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnXActionPerformed
 
     private void btnWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnWActionPerformed
 
     private void btnVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnVActionPerformed
 
     private void btnUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnUActionPerformed
 
     private void btnTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnTActionPerformed
 
     private void btnSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnSActionPerformed
 
     private void btnRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnRActionPerformed
 
     private void btnQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnQActionPerformed
 
     private void btnPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnPActionPerformed
 
     private void btnOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnOActionPerformed
 
     private void btnNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNActionPerformed
-        // TODO add your handling code here:
+      
     }//GEN-LAST:event_btnNActionPerformed
 
     private void btnMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnMActionPerformed
 
     private void btnLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnLActionPerformed
 
     private void btnKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnKActionPerformed
 
     private void btnJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJActionPerformed
-        // TODO add your handling code here:
+      
     }//GEN-LAST:event_btnJActionPerformed
 
     private void btnIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnIActionPerformed
 
     private void btnHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnHActionPerformed
 
     private void btnGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnGActionPerformed
 
     private void btnFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnFActionPerformed
 
     private void btnEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEActionPerformed
-        // TODO add your handling code here:
+   
     }//GEN-LAST:event_btnEActionPerformed
 
     private void btnDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnDActionPerformed
 
     private void btnCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCActionPerformed
-        // TODO add your handling code here:
+ 
     }//GEN-LAST:event_btnCActionPerformed
 
     private void btnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnBActionPerformed
 
     private void btnAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnAActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
